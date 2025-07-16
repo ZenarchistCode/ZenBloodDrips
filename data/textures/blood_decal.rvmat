@@ -1,0 +1,73 @@
+ambient[] = {0.3, 0, 0, 1};  // Dark red for ambient color
+diffuse[] = {0.6, 0, 0, 1};  // Slightly brighter red for diffuse light response
+emmisive[] = {0, 0, 0, 1};   // No emissive light
+forceddiffuse[] = {0, 0, 0, 0};
+specular[] = {0.3, 0, 0, 1}; // Reduced specular for slight shininess
+specularpower = 30;          // Lower specular power for a less glossy appearance
+pixelshaderid = NormalDXTA;
+vertexshaderid = NormalMap;
+
+class TegGen0
+{
+	uvSource = None;
+};
+class TegGen1
+{
+	uvSource = Tex;
+	class uvTransform
+	{
+		aside[] = {1.0000, 0.0000, 0.0000};
+		up[] = {0.0000, 1.0000, 0.0000};
+		dir[] = {0.0000, 0.0000, 0.0000};
+		pos[] = {0.0000, 0.0000, 0.0000};
+	};
+};
+// Replicate similar structure for TegGen2 to TegGen7 with uvSource as Tex or None as needed...
+
+class stage1
+{
+	texture = "#(argb,8,8,3)color(0.6,0,0,1.0,nohq)";  // Dark red color for base
+	Texgen = 1;
+};
+class stage2
+{
+	texture = "#(argb,8,8,3)color(0.3,0,0,1,dt)"; // Darker red for diffuse texture
+	Texgen = 2;
+};
+class stage3
+{
+	texture = "#(argb,8,8,3)color(0,0,0,0,mc)";
+	Texgen = 3;
+};
+class stage4
+{
+	texture = "#(argb,8,8,3)color(0,0,0,1.0,as)";
+	Texgen = 4;
+};
+class stage5
+{
+	texture = "#(argb,8,8,3)color(0.6,0,0,1.0,smdi)"; // Slight shine, dark red for specular
+	Texgen = 5;
+};
+class stage6
+{
+	texture = "#(ai,64,64,1)fresnel(1.82,0.71)";
+	Texgen = 6;
+};
+class stage7
+{
+	texture = "dz\data\data\env_land_co.paa";
+	Texgen = 7;
+};
+class stage8
+{
+	texture = "#(argb,8,8,3)color(0.5,0,0,1,dt)";  // Dark red color for additional depth
+	Filter = Point;
+	Texgen = 0;
+};
+class stage9
+{
+	texture = "#(argb,8,8,3)color(0.5,0,0,1,dt)";
+	Filter = Point;
+	Texgen = 0;
+};
