@@ -8,8 +8,21 @@ modded class ComponentAnimalBleeding
 	{
 		super.CreateWound(damage_result, zone_name, ammo);
 
+		#ifdef ZENMODPACK 
+		if (!ZenModEnabled("ZenBloodDrips"))
+		{
+			return;
+		}
+		#endif
+
+		if (!ZenShouldBleed())
+		{
+			return;
+		}
+
 		m_LastZenWoundTimestamp = GetGame().GetTime();
 
+		// To maintain vanilla compatibility, check vanilla timer first (currently not used in actual vanilla but other mods might)
 		if (m_BleedTimer && m_BleedTimer.IsRunning())
 		{
 			StopZenBleedTimer();
@@ -27,6 +40,11 @@ modded class ComponentAnimalBleeding
 	{
 		super.Bleed(wound_intensity);
 
+		if (!ZenShouldBleed())
+		{
+			return;
+		}
+
 		HandleZenBloodDrips();
 	}
 
@@ -34,7 +52,9 @@ modded class ComponentAnimalBleeding
 	{
 		#ifdef ZENMODPACK 
 		if (!ZenModEnabled("ZenBloodDrips"))
+		{
 			return;
+		}
 		#endif
 
 		if (!GetZenBloodDripsConfig().EnableAnimalBloodDrops)
@@ -111,5 +131,22 @@ modded class ComponentAnimalBleeding
 			
 			m_ZenBleedTimer = NULL;
 		}
+	}
+
+	bool ZenShouldBleed()
+	{
+		string animalName = m_ThisEntityAI.GetType();
+		animalName.ToLower();
+
+		for (int i = 0; i < GetZenBloodDripsConfig().Animal_IncludeList.Count(); i++)
+		{
+			string checkName = GetZenBloodDripsConfig().Animal_IncludeList.Get(i);
+			checkName.ToLower();
+
+			if (animalName.Contains(checkName))
+				return true;
+		}
+
+		return false;
 	}
 }

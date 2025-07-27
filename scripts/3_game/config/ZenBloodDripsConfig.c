@@ -3,7 +3,7 @@ class ZenBloodDripsConfig
 	// Config location
 	private const static string zenModFolder = "$profile:\\Zenarchist\\";
 	private const static string zenConfigName = "ZenBloodDripsConfig.json";
-	private const static string CURRENT_VERSION = "2";
+	private const static string CURRENT_VERSION = "3";
 	string CONFIG_VERSION = "";
 
 	// Settings data
@@ -17,6 +17,7 @@ class ZenBloodDripsConfig
 	float Animal_BloodDropChanceStationary; // Chance of blood drop per every 3 seconds
 	float Animal_BloodDropChanceMoving;
 	float Animal_BloodDropPersistence;
+	ref array<string> Animal_IncludeList;
 
 	void Load()
 	{
@@ -60,6 +61,13 @@ class ZenBloodDripsConfig
 		Animal_BloodDropChanceStationary = 0.0; // Chance of blood drop per every ~1 seconds
 		Animal_BloodDropChanceMoving = 0.95;
 		Animal_BloodDropPersistence = 600; // 10 minutes
+
+		Animal_IncludeList = new array<string>;
+		Animal_IncludeList.Insert("Animal_CapreolusCapreolus");
+		Animal_IncludeList.Insert("Animal_CervusElaphus");
+		Animal_IncludeList.Insert("Animal_LepusEuropaeus");
+		Animal_IncludeList.Insert("Animal_SusScrofa");
+		Animal_IncludeList.Insert("Animal_VulpesVulpes");
 	}
 
 	void Save()
